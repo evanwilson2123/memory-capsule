@@ -108,7 +108,7 @@ const TimeCapsuleForm = () => {
         setVideos([]);
         setAudios([]);
       } else {
-        setResponseMessage("Failed to create time capsule");
+        setResponseMessage(response.data.error);
       }
     } catch (error: any) {
       setResponseMessage("An error occurred. Please try again.");
