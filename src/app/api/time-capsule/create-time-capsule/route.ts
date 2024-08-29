@@ -176,9 +176,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(response, { status: 201 });
   } catch (error: any) {
     console.error("Error occurred:", error);
+    console.log(error.message);
     return NextResponse.json(
       {
-        message: "Failed to create time capsule",
+        error: error.message,
       },
       { status: 500 }
     );
