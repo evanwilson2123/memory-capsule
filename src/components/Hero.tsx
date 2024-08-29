@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
 
   const getStarted = (): void => {
     console.log("Get Started");
-    router.push("/sign-up"); // Use the router to navigate
+    router.push("/create-capsule"); // Use the router to navigate
   };
 
   return (
