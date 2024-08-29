@@ -9,6 +9,7 @@ const secret_key = process.env.SECRET_KEY || "";
 const bucket_name = process.env.BUCKET_NAME || "";
 const region = process.env.REGION || "";
 
+// Email sending function using Nodemailer
 const sendEmail = async (to: string, subject: string, text: string) => {
   const transport = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -36,6 +37,7 @@ const sendEmail = async (to: string, subject: string, text: string) => {
   }
 };
 
+// AWS S3 client setup
 const s3Client = new S3Client({
   region: region,
   credentials: {
@@ -44,6 +46,7 @@ const s3Client = new S3Client({
   },
 });
 
+// Function to upload files to S3
 async function uploadFile(file: Buffer, filename: string, fileType: string) {
   let contentType = "";
   let folder = "";
@@ -84,18 +87,19 @@ async function uploadFile(file: Buffer, filename: string, fileType: string) {
   return key;
 }
 
+// POST handler to create a new time capsule
 export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
     const formData = await req.formData();
 
-    // Extract multiple files for each type
+    // Extract fields from the form data
     const files = formData.getAll("image");
     const videos = formData.getAll("video");
     const audios = formData.getAll("audio");
     const title = formData.get("title")?.toString();
     const description = formData.get("description")?.toString();
-    const message = formData.get("text")?.toString();
+    const message = formData.get("message")?.toString();
     const recipientEmail = formData.get("recipientEmail")?.toString();
     const recipientName = formData.get("recipientName")?.toString();
     const recipientPhone = formData.get("recipientPhone")?.toString();
@@ -109,7 +113,7 @@ export async function POST(req: NextRequest) {
     const videoFiles: string[] = [];
     const audioFiles: string[] = [];
 
-    // Upload each image file
+    // Upload each image file to S3
     for (const file of files) {
       if (typeof file !== "string") {
         const fileBuffer = Buffer.from(await file.arrayBuffer());
@@ -118,7 +122,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Upload each video file
+    // Upload each video file to S3
     for (const video of videos) {
       if (typeof video !== "string") {
         const videoBuffer = Buffer.from(await video.arrayBuffer());
@@ -127,7 +131,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Upload each audio file
+    // Upload each audio file to S3
     for (const audio of audios) {
       if (typeof audio !== "string") {
         const audioBuffer = Buffer.from(await audio.arrayBuffer());
@@ -136,6 +140,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Create a new TimeCapsule document
     const timeCapsule = new TimeCapsule({
       title,
       description,
@@ -152,9 +157,8 @@ export async function POST(req: NextRequest) {
 
     const savedCapsule = await timeCapsule.save();
 
-    // Send email to recipient
+    // Send email notification to recipient
     const subject = `You have received a time capsule from ${senderName}`;
-
     const text = `You have received a time capsule from ${senderName}. You can unlock it on ${unlockDate}. Here is the link:\n https://memory-capsule-ykao.vercel.app/${savedCapsule._id}`;
 
     await sendEmail(recipientEmail as string, subject, text);
