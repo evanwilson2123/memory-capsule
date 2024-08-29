@@ -111,7 +111,7 @@ const TimeCapsuleForm = () => {
         setResponseMessage(response.data.error);
       }
     } catch (error: any) {
-      setResponseMessage("An error occurred. Please try again.");
+      setResponseMessage(error.message);
       console.error(error.message);
     } finally {
       setLoading(false); // Stop loading
