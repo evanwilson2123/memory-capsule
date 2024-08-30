@@ -19,47 +19,44 @@ const TimeCapsuleForm = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [responseMessage, setResponseMessage] = useState<string | null>(null); // Response message state
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_FILES = 5;
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFiles: React.Dispatch<React.SetStateAction<File[]>>,
+    currentFiles: File[],
+    fileType: string
+  ) => {
     if (e.target.files) {
-      const selectedImages = Array.from(e.target.files);
-      setImages((prevImages) => {
-        if (prevImages.length + selectedImages.length > 5) {
-          alert("You can only upload up to 5 images.");
-          return prevImages;
+      const selectedFiles = Array.from(e.target.files);
+      const validFiles = selectedFiles.filter((file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          alert(`${fileType} ${file.name} is too large. Max size is 10MB.`);
+          return false;
         }
-        return [...prevImages, ...selectedImages];
+        return true;
+      });
+
+      setFiles((prevFiles) => {
+        if (prevFiles.length + validFiles.length > MAX_FILES) {
+          alert(`You can only upload up to ${MAX_FILES} ${fileType}s.`);
+          return prevFiles;
+        }
+        return [...prevFiles, ...validFiles];
       });
       e.target.value = "";
     }
   };
 
-  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selectedVideos = Array.from(e.target.files);
-      setVideos((prevVideos) => {
-        if (prevVideos.length + selectedVideos.length > 5) {
-          alert("You can only upload up to 5 videos.");
-          return prevVideos;
-        }
-        return [...prevVideos, ...selectedVideos];
-      });
-      e.target.value = "";
-    }
-  };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    handleFileChange(e, setImages, images, "image");
 
-  const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selectedAudios = Array.from(e.target.files);
-      setAudios((prevAudios) => {
-        if (prevAudios.length + selectedAudios.length > 5) {
-          alert("You can only upload up to 5 audios.");
-          return prevAudios;
-        }
-        return [...prevAudios, ...selectedAudios];
-      });
-      e.target.value = "";
-    }
-  };
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    handleFileChange(e, setVideos, videos, "video");
+
+  const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    handleFileChange(e, setAudios, audios, "audio");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -111,7 +108,7 @@ const TimeCapsuleForm = () => {
         setResponseMessage(response.data.error);
       }
     } catch (error: any) {
-      setResponseMessage(error.message);
+      setResponseMessage("An error occurred. Please try again.");
       console.error(error.message);
     } finally {
       setLoading(false); // Stop loading
@@ -266,10 +263,16 @@ const TimeCapsuleForm = () => {
               onChange={handleImageChange}
               className="w-full mt-2 text-gray-700"
             />
-            <ul className="mt-2">
+            <ul className="mt-2 grid grid-cols-2 gap-2">
               {images.map((file, index) => (
-                <li key={index} className="text-gray-700">
-                  {file.name}
+                <li
+                  key={index}
+                  className="bg-gray-100 p-2 rounded-lg text-center text-sm text-black truncate"
+                  title={file.name} // Show full file name on hover
+                >
+                  {file.name.length > 20
+                    ? `${file.name.slice(0, 20)}...`
+                    : file.name}
                 </li>
               ))}
             </ul>
@@ -286,9 +289,12 @@ const TimeCapsuleForm = () => {
               onChange={handleVideoChange}
               className="w-full mt-2 text-gray-700"
             />
-            <ul className="mt-2">
+            <ul className="mt-2 grid grid-cols-2 gap-2">
               {videos.map((file, index) => (
-                <li key={index} className="text-gray-700">
+                <li
+                  key={index}
+                  className="bg-gray-100 p-2 rounded-lg text-center text-sm text-black"
+                >
                   {file.name}
                 </li>
               ))}
@@ -306,9 +312,12 @@ const TimeCapsuleForm = () => {
               onChange={handleAudioChange}
               className="w-full mt-2 text-gray-700"
             />
-            <ul className="mt-2">
+            <ul className="mt-2 grid grid-cols-2 gap-2">
               {audios.map((file, index) => (
-                <li key={index} className="text-gray-700">
+                <li
+                  key={index}
+                  className="bg-gray-100 p-2 rounded-lg text-center text-sm text-black"
+                >
                   {file.name}
                 </li>
               ))}
