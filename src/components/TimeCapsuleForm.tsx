@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaSpinner } from "react-icons/fa"; // Import the spinner icon from react-icons
+import { useRouter } from "next/navigation";
 
 const TimeCapsuleForm = () => {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [message, setMessage] = useState("");
@@ -92,6 +94,7 @@ const TimeCapsuleForm = () => {
 
       if (response.status === 201) {
         setResponseMessage("Time capsule created successfully");
+        router.push(`/preview-capsule/${response.data.data._id}`);
         // Clear form fields on success
         setTitle("");
         setDescription("");

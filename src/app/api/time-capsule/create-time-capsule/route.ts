@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     const audios = formData.getAll("audio");
     const title = formData.get("title")?.toString();
     const description = formData.get("description")?.toString();
-    const message = formData.get("text")?.toString();
+    const message = formData.get("message")?.toString();
     const recipientEmail = formData.get("recipientEmail")?.toString();
     const recipientName = formData.get("recipientName")?.toString();
     const recipientPhone = formData.get("recipientPhone")?.toString();
@@ -164,6 +164,7 @@ export async function POST(req: NextRequest) {
       message: "Success",
       status: 201,
       data: {
+        _id: savedCapsule._id,
         title,
         description,
         message,
