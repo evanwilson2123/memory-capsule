@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface ITimeCapsule extends Document {
+  userId: string;
   title: string;
   description: string;
   images: string[];
@@ -16,6 +17,7 @@ export interface ITimeCapsule extends Document {
 }
 
 const TimeCapsuleSchema: Schema = new Schema({
+  userId: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   images: { type: [String], required: false },

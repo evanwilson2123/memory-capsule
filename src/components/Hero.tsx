@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { ClerkProvider, SignInButton, SignedOut } from "@clerk/nextjs";
 
 const Hero: React.FC = () => {
   const router = useRouter(); // Correctly use the hook at the top level of the component

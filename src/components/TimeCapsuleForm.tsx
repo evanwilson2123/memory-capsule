@@ -1,12 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaSpinner } from "react-icons/fa"; // Import the spinner icon from react-icons
+import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const TimeCapsuleForm = () => {
   const router = useRouter();
+  const { isSignedIn, user } = useUser(); // Get the authentication status
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/login"); // Redirect to the sign-in page
+    }
+  }, [isSignedIn, router]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [message, setMessage] = useState("");
@@ -65,6 +75,13 @@ const TimeCapsuleForm = () => {
     setLoading(true); // Start loading
 
     const formData = new FormData();
+    if (user && user.id) {
+      formData.append("userId", user.id); // Append user ID
+    } else {
+      setResponseMessage("An error occurred. Please try again.");
+      setLoading(false); // Stop loading
+      return;
+    }
     formData.append("title", title);
     formData.append("description", description);
     formData.append("message", message);
@@ -117,6 +134,10 @@ const TimeCapsuleForm = () => {
       setLoading(false); // Stop loading
     }
   };
+
+  if (!isSignedIn) {
+    return null; // or return a loading spinner while redirecting
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 relative">

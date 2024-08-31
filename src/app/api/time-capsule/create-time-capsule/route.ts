@@ -90,6 +90,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
 
     // Extract multiple files for each type
+    const userId = formData.get("userId")?.toString();
     const files = formData.getAll("image");
     const videos = formData.getAll("video");
     const audios = formData.getAll("audio");
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
     }
 
     const timeCapsule = new TimeCapsule({
+      userId,
       title,
       description,
       images: imageFiles,

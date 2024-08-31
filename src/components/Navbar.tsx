@@ -3,6 +3,8 @@
 import React from "react";
 import Link from "next/link";
 
+import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
+
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-white shadow-lg">
@@ -64,18 +66,29 @@ const Navbar: React.FC = () => {
 
           {/* Secondary Nav */}
           <div className="hidden md:flex items-center space-x-1">
-            <Link
-              href="/login"
-              className="py-2 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/sign-up"
-              className="py-2 px-3 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition duration-300"
-            >
-              Sign Up
-            </Link>
+            <SignedOut>
+              <Link
+                href="/login"
+                className="py-2 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+              >
+                Log In
+              </Link>
+            </SignedOut>
+            <SignedOut>
+              <Link
+                href="/sign-up"
+                className="py-2 px-3 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition duration-300"
+              >
+                Sign Up
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <SignOutButton>
+                <button className="bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+                  Sign Out
+                </button>
+              </SignOutButton>
+            </SignedIn>
           </div>
 
           {/* Mobile Button */}
@@ -111,24 +124,28 @@ const Navbar: React.FC = () => {
         >
           About
         </Link>
-        <Link
-          href="/sign-up"
-          className="block py-2 px-4 text-sm hover:bg-gray-200"
-        >
-          Sign Up
-        </Link>
+        <SignedOut>
+          <Link
+            href="/sign-up"
+            className="block py-2 px-4 text-sm hover:bg-gray-200"
+          >
+            Sign Up
+          </Link>
+        </SignedOut>
         <Link
           href="/contact"
           className="block py-2 px-4 text-sm hover:bg-gray-200"
         >
           Contact
         </Link>
-        <Link
-          href="/login"
-          className="block py-2 px-4 text-sm hover:bg-gray-200"
-        >
-          Log In
-        </Link>
+        <SignedOut>
+          <Link
+            href="/login"
+            className="block py-2 px-4 text-sm hover:bg-gray-200"
+          >
+            Log In
+          </Link>
+        </SignedOut>
       </div>
     </nav>
   );
