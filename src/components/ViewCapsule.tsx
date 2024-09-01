@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Countdown from "react-countdown";
 
 const ViewCapsule = () => {
   const params = useParams();
+  const router = useRouter(); // Initialize useRouter
   const id = params.id;
   const [capsule, setCapsule] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -20,12 +21,28 @@ const ViewCapsule = () => {
         const response = await axios.get(`/api/time-capsule/${id}`);
         const data = response.data;
 
+        // Fetch signed URLs for images, videos, and audios
+        const fetchFiles = async (files: string[]) => {
+          const promises = files.map(async (file) => {
+            const fileResponse = await axios.get(`/api/get-file?key=${file}`);
+            return fileResponse.data.url;
+          });
+          return await Promise.all(promises);
+        };
+
+        const imageUrls = await fetchFiles(data.images);
+        const videoUrls = await fetchFiles(data.videos);
+        const audioUrls = await fetchFiles(data.audios);
+
         // Convert unlockDate from UTC to local time zone
         const localUnlockDate = new Date(data.unlockDate);
 
         setCapsule({
           ...data,
           unlockDate: localUnlockDate, // Set the local time as the unlockDate
+          images: imageUrls,
+          videos: videoUrls,
+          audios: audioUrls,
         });
 
         // Check if the unlock date has passed
@@ -60,11 +77,11 @@ const ViewCapsule = () => {
   };
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-white text-center">{error}</div>;
   }
 
   if (!capsule) {
-    return <div>Loading...</div>;
+    return <div className="text-white text-center">Loading...</div>;
   }
 
   return (
@@ -79,28 +96,54 @@ const ViewCapsule = () => {
           </p>
           <div>
             <p className="text-gray-700 mb-4">{capsule.message}</p>
-            <div className="media-content">
-              {capsule.images.map((image: string, index: number) => (
-                <img
-                  key={index}
-                  src={`/api/get-file?key=${image}`}
-                  alt="Memory Image"
-                  className="mb-4"
-                />
-              ))}
-              {capsule.videos.map((video: string, index: number) => (
-                <video key={index} controls className="mb-4">
-                  <source src={`/api/get-file?key=${video}`} type="video/mp4" />
-                </video>
-              ))}
-              {capsule.audios.map((audio: string, index: number) => (
-                <audio key={index} controls className="mb-4">
-                  <source
-                    src={`/api/get-file?key=${audio}`}
-                    type="audio/mpeg"
-                  />
-                </audio>
-              ))}
+            <div className="media-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {capsule.images.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-bold text-gray-700 mb-2">
+                    Images
+                  </h3>
+                  {capsule.images.map((url: string, index: number) => (
+                    <img
+                      key={index}
+                      src={url}
+                      alt="Memory Image"
+                      className="w-full h-auto rounded-lg shadow-lg object-cover mb-4"
+                    />
+                  ))}
+                </div>
+              )}
+              {capsule.videos.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-bold text-gray-700 mb-2">
+                    Videos
+                  </h3>
+                  {capsule.videos.map((url: string, index: number) => (
+                    <video
+                      key={index}
+                      controls
+                      className="w-full h-auto rounded-lg shadow-lg mb-4"
+                    >
+                      <source src={url} type="video/mp4" />
+                    </video>
+                  ))}
+                </div>
+              )}
+              {capsule.audios.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-bold text-gray-700 mb-2">
+                    Audios
+                  </h3>
+                  {capsule.audios.map((url: string, index: number) => (
+                    <audio
+                      key={index}
+                      controls
+                      className="w-full rounded-lg shadow-lg mb-4"
+                    >
+                      <source src={url} type="audio/mpeg" />
+                    </audio>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
