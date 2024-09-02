@@ -11,7 +11,7 @@ const Loading: React.FC = () => {
           Please Wait...
         </h1>
         <p className="text-xl text-white mb-8 leading-relaxed">
-          We&apos;re preparing your content. This won't take long.
+          We&apos;re preparing your content. This won&apos;t take long.
         </p>
         <div className="flex justify-center items-center">
           <FaSpinner className="text-white text-6xl animate-spin" />
