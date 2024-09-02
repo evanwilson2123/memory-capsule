@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation"; // Import useRouter
+import { useParams, useRouter } from "next/navigation";
+import Loading from "./Loading";
+import { FaImage, FaVideo, FaMusic } from "react-icons/fa";
 
 const PreviewCapsule = () => {
   const params = useParams();
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
   const id = params.id;
   const [capsule, setCapsule] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,6 @@ const PreviewCapsule = () => {
         const response = await axios.get(`/api/time-capsule/${id}`);
         const data = response.data;
 
-        // Fetch signed URLs for images, videos, and audios
         const fetchFiles = async (files: string[]) => {
           const promises = files.map(async (file) => {
             const fileResponse = await axios.get(`/api/get-file?key=${file}`);
@@ -55,13 +56,13 @@ const PreviewCapsule = () => {
   }
 
   if (!capsule) {
-    return <div className="text-white text-center">Loading...</div>;
+    return <Loading />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col items-center justify-center p-6">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
-        <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-6">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 flex flex-col items-center justify-center p-6">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-5xl transform transition-transform hover:scale-105 duration-500">
+        <h1 className="text-5xl font-extrabold text-center text-indigo-600 mb-8">
           {capsule.title}
         </h1>
         <p className="text-gray-700 text-center mb-8 text-lg">
@@ -75,53 +76,68 @@ const PreviewCapsule = () => {
             {capsule.message}
           </p>
         </div>
-        <div className="media-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {capsule.images.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold text-gray-700 mb-2">Images</h3>
-              {capsule.images.map((url: string, index: number) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt="Memory Image"
-                  className="w-full h-auto rounded-lg shadow-lg object-cover"
-                />
-              ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center mb-10">
+          <div className="text-center w-full">
+            <FaImage className="text-6xl text-indigo-600 mb-4 mx-auto" />
+            <h3 className="text-xl font-bold text-gray-700">Images</h3>
+            <div className="space-y-4">
+              {capsule.images.length > 0 ? (
+                capsule.images.map((url: string, index: number) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt="Memory Image"
+                    className="w-full h-40 object-cover rounded-lg shadow-lg"
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">No Images Uploaded</p>
+              )}
             </div>
-          )}
-          {capsule.videos.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold text-gray-700 mb-2">Videos</h3>
-              {capsule.videos.map((url: string, index: number) => (
-                <video
-                  key={index}
-                  controls
-                  className="w-full h-auto rounded-lg shadow-lg"
-                >
-                  <source src={url} type="video/mp4" />
-                </video>
-              ))}
+          </div>
+          <div className="text-center w-full">
+            <FaVideo className="text-6xl text-indigo-600 mb-4 mx-auto" />
+            <h3 className="text-xl font-bold text-gray-700">Videos</h3>
+            <div className="space-y-4">
+              {capsule.videos.length > 0 ? (
+                capsule.videos.map((url: string, index: number) => (
+                  <video
+                    key={index}
+                    controls
+                    className="w-full h-40 object-cover rounded-lg shadow-lg"
+                  >
+                    <source src={url} type="video/mp4" />
+                  </video>
+                ))
+              ) : (
+                <p className="text-gray-500">No Videos Uploaded</p>
+              )}
             </div>
-          )}
-          {capsule.audios.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold text-gray-700 mb-2">Audios</h3>
-              {capsule.audios.map((url: string, index: number) => (
-                <audio
-                  key={index}
-                  controls
-                  className="w-full rounded-lg shadow-lg"
-                >
-                  <source src={url} type="audio/mpeg" />
-                </audio>
-              ))}
+          </div>
+          <div className="text-center w-full">
+            <FaMusic className="text-6xl text-indigo-600 mb-4 mx-auto" />
+            <h3 className="text-xl font-bold text-gray-700">Audios</h3>
+            <div className="space-y-4">
+              {capsule.audios.length > 0 ? (
+                capsule.audios.map((url: string, index: number) => (
+                  <audio
+                    key={index}
+                    controls
+                    className="w-full h-40 rounded-lg shadow-lg"
+                  >
+                    <source src={url} type="audio/mpeg" />
+                  </audio>
+                ))
+              ) : (
+                <p className="text-gray-500">No Audios Uploaded</p>
+              )}
             </div>
-          )}
+          </div>
         </div>
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-12">
           <button
             onClick={handleContinue}
-            className="bg-blue-500 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
+            className="px-10 py-4 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-110"
           >
             Continue
           </button>

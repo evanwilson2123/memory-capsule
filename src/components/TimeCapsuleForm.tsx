@@ -140,7 +140,7 @@ const TimeCapsuleForm = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 relative">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 relative">
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
           <FaSpinner className="text-white text-6xl animate-spin" />
@@ -148,17 +148,17 @@ const TimeCapsuleForm = () => {
       )}
       <form
         onSubmit={handleSubmit}
-        className={`bg-white p-8 rounded-lg shadow-lg w-full max-w-lg mt-12 space-y-8 relative ${
+        className={`bg-white p-10 rounded-xl shadow-2xl w-full max-w-2xl mt-12 space-y-8 relative ${
           loading ? "opacity-50 pointer-events-none" : "opacity-100"
         }`}
       >
-        <h2 className="text-3xl font-bold text-center text-blue-500 mb-6">
+        <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
           Create Your Time Capsule
         </h2>
 
         <section className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Title
             </label>
             <input
@@ -166,35 +166,35 @@ const TimeCapsuleForm = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             ></textarea>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Message
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             ></textarea>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Unlock Date
             </label>
             <input
@@ -202,7 +202,7 @@ const TimeCapsuleForm = () => {
               value={unlockDate}
               onChange={(e) => setUnlockDate(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
         </section>
@@ -213,7 +213,7 @@ const TimeCapsuleForm = () => {
           </h3>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Recipient Name
             </label>
             <input
@@ -221,12 +221,12 @@ const TimeCapsuleForm = () => {
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Recipient Email
             </label>
             <input
@@ -234,12 +234,12 @@ const TimeCapsuleForm = () => {
               value={recipientEmail}
               onChange={(e) => setRecipientEmail(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Recipient Phone
             </label>
             <input
@@ -247,7 +247,7 @@ const TimeCapsuleForm = () => {
               value={recipientPhone}
               onChange={(e) => setRecipientPhone(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
         </section>
@@ -258,7 +258,7 @@ const TimeCapsuleForm = () => {
           </h3>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Your Full Name
             </label>
             <input
@@ -266,7 +266,7 @@ const TimeCapsuleForm = () => {
               value={senderName}
               onChange={(e) => setSenderName(e.target.value)}
               required
-              className="text-black w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="text-black w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
             />
           </div>
         </section>
@@ -277,7 +277,7 @@ const TimeCapsuleForm = () => {
           </h3>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Images (up to 5)
             </label>
             <input
@@ -303,7 +303,7 @@ const TimeCapsuleForm = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Videos (up to 5)
             </label>
             <input
@@ -326,7 +326,7 @@ const TimeCapsuleForm = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-600">
               Audios (up to 5)
             </label>
             <input
@@ -351,7 +351,7 @@ const TimeCapsuleForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
+          className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg font-bold hover:bg-gray-600 transition duration-300"
           disabled={loading}
         >
           {loading ? "Submitting..." : "Create Time Capsule"}

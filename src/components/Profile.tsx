@@ -5,6 +5,7 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { ITimeCapsule } from "@/models/TimeCapsule";
 import { useRouter } from "next/navigation";
+import Loading from "./Loading";
 
 interface Profile {
   timeCapsules: ITimeCapsule[];
@@ -62,7 +63,11 @@ const Profile = () => {
   }, [isSignedIn, user?.id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {

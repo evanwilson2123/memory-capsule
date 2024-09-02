@@ -2,20 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define color variables for light and dark modes */
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 240, 240, 240; /* Light gray for subtle background */
+  --background-end-rgb: 255, 255, 255; /* White for clean, modern look */
+  --primary-blue: 79, 142, 247; /* RGB for primary blue color */
+  --primary-purple: 122, 94, 183; /* RGB for primary purple color */
+  --button-hover: 95, 76, 161; /* RGB for button hover */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 30, 30, 30; /* Dark gray for muted background */
+    --background-end-rgb: 0, 0, 0; /* Black for contrast */
   }
 }
 
+/* Global styles for body */
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -26,8 +31,40 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+/* Custom text balance utility */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Hero component specific styles */
+.hero-container {
+  @apply flex items-center justify-center h-screen;
+  background: rgb(var(--background-start-rgb));
+}
+
+.hero-content {
+  @apply text-center max-w-4xl mx-auto p-6;
+}
+
+.hero-title {
+  @apply text-6xl font-bold mb-6 leading-tight;
+  color: rgb(var(--primary-blue));
+}
+
+.hero-subtitle {
+  @apply text-xl mb-8 leading-relaxed;
+  color: rgba(var(--foreground-rgb), 0.75); /* Slightly lighter text */
+}
+
+.hero-button {
+  @apply px-8 py-4 font-bold rounded-lg shadow-md transition duration-300;
+  background-color: rgb(var(--primary-purple));
+  color: rgb(255, 255, 255);
+}
+
+.hero-button:hover {
+  background-color: rgb(var(--button-hover));
+  transform: scale(1.05);
 }

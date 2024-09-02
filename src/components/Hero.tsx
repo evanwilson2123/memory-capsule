@@ -2,34 +2,57 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ClerkProvider, SignInButton, SignedOut } from "@clerk/nextjs";
+import { SignedOut, SignedIn } from "@clerk/nextjs";
 
 const Hero: React.FC = () => {
-  const router = useRouter(); // Correctly use the hook at the top level of the component
+  const router = useRouter();
 
   const getStarted = (): void => {
     console.log("Get Started");
-    router.push("/create-capsule"); // Use the router to navigate
+    router.push("/create-capsule");
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="text-center">
-        <h1 className="text-6xl font-bold text-white mb-4">
-          Welcome to Memory Capsule
-        </h1>
-        <p className="text-xl text-white mb-8">
-          Create, store, and share your most cherished memories, set to unlock
-          at a future date.
-        </p>
-        <button
-          className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-full hover:bg-gray-300 transition duration-300"
-          onClick={getStarted} // Attach the event handler to the button
-        >
-          Get Started
-        </button>
-      </div>
-    </div>
+    <>
+      <SignedOut>
+        <div className="flex items-center justify-center h-screen bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500">
+          <div className="text-center max-w-4xl mx-auto p-6">
+            <h1 className="text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+              Welcome to Memory Capsule
+            </h1>
+            <p className="text-2xl text-white mb-8 leading-relaxed drop-shadow-md">
+              Capture your most cherished memories and set them to unlock at a
+              future date, preserving moments forever.
+            </p>
+            <button
+              className="px-8 py-4 bg-white text-purple-600 font-bold rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105"
+              onClick={getStarted}
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <div className="flex items-center justify-center h-screen bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500">
+          <div className="text-center max-w-4xl mx-auto p-6">
+            <h1 className="text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+              Welcome Back to Memory Capsule
+            </h1>
+            <p className="text-2xl text-white mb-8 leading-relaxed drop-shadow-md">
+              Ready to preserve more memories? Click below to create a new
+              memory capsule.
+            </p>
+            <button
+              className="px-8 py-4 bg-white text-purple-600 font-bold rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105"
+              onClick={getStarted}
+            >
+              Create Memory Capsule
+            </button>
+          </div>
+        </div>
+      </SignedIn>
+    </>
   );
 };
 
