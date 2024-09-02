@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 import TimeCapsule from "@/models/TimeCapsule";
 import connectToDatabase from "@/lib/db";
 import nodemailer from "nodemailer";
+import cron from "node-cron";
 
 const access_key = process.env.ACCESS_KEY || "";
 const secret_key = process.env.SECRET_KEY || "";
@@ -33,6 +34,23 @@ const sendEmail = async (to: string, subject: string, text: string) => {
     console.log(`Email sent to ${to}`);
   } catch (error: any) {
     console.error("Error sending email:", error);
+  }
+};
+
+const scheduleEmail = (
+  unlockDate: Date,
+  recipientEmail: string,
+  subject: string,
+  text: string
+) => {
+  const now = new Date();
+
+  const delay = unlockDate.getTime() - now.getTime();
+
+  if (delay > 0) {
+    setTimeout(async () => {
+      await sendEmail(recipientEmail, subject, text);
+    }, delay);
   }
 };
 
@@ -161,6 +179,17 @@ export async function POST(req: NextRequest) {
 
     await sendEmail(recipientEmail as string, subject, text);
 
+    // Schedule email to be sent to recipient
+    const subjectSchedule = `Time capsule unlocked from ${senderName}`;
+
+    const textSchedule = `Your time capsule from ${senderName} has been unlocked. Here is the link:\n https://memory-capsule-ykao.vercel.app/view-capsule/${savedCapsule._id}\n\nEnjoy!!`;
+
+    scheduleEmail(
+      unlockDate as Date,
+      recipientEmail as string,
+      subjectSchedule,
+      textSchedule
+    );
     // Build the response object
     const response = {
       message: "Success",

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Countdown from "react-countdown";
+import Loading from "./Loading";
 
 const ViewCapsule = () => {
   const params = useParams();
@@ -81,7 +82,7 @@ const ViewCapsule = () => {
   }
 
   if (!capsule) {
-    return <div className="text-white text-center">Loading...</div>;
+    return <Loading />;
   }
 
   return (
