@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Countdown from "react-countdown";
 import Loading from "./Loading";
+import { useUser } from "@clerk/nextjs";
 
 const ViewCapsule = () => {
   const params = useParams();
@@ -13,6 +14,7 @@ const ViewCapsule = () => {
   const [capsule, setCapsule] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const { isSignedIn, user } = useUser();
 
   useEffect(() => {
     if (!id) return;

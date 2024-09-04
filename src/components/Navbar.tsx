@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
             </SignedIn>
             <SignedOut>
               <Link
-                href="/login"
+                href="/sign-in"
                 className="py-2 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
               >
                 Log In
@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
         </SignedIn>
         <SignedOut>
           <Link
-            href="/login"
+            href="/sign-in"
             className="block py-2 px-4 text-sm hover:bg-gray-200"
           >
             Log In
