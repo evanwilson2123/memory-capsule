@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
             <SignedIn>
               {user ? (
                 <Link
-                  href={`/profile/${user.id}`}
+                  href={`/profile/${user.id}/${user.emailAddresses[0]}`}
                   className="py-5 px-3 text-gray-700 hover:text-gray-900"
                 >
                   Profile
