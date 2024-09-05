@@ -175,14 +175,14 @@ export async function POST(req: NextRequest) {
     // Send email to recipient
     const subject = `You have received a time capsule from ${senderName}`;
 
-    const text = `You have received a time capsule from ${senderName}. You can unlock it on ${unlockDate}. Here is the link:\n https://memory-capsule-livid.vercel.app/view-capsule/${savedCapsule._id}`;
+    const text = `You have received a time capsule from ${senderName}. You can unlock it on ${unlockDate}. Here is the link:\n https://memory-capsule-ykao.vercel.app/view-capsule/${savedCapsule._id}`;
 
     await sendEmail(recipientEmail as string, subject, text);
 
     // Schedule email to be sent to recipient
     const subjectSchedule = `Time capsule unlocked from ${senderName}`;
 
-    const textSchedule = `Your time capsule from ${senderName} has been unlocked. Here is the link:\n https://memory-capsule-livid.vercel.app/view-capsule/${savedCapsule._id}\n\nEnjoy!!`;
+    const textSchedule = `Your time capsule from ${senderName} has been unlocked. Here is the link:\n https://memory-capsule-ykao.vercel.app/view-capsule/${savedCapsule._id}\n\nEnjoy!!`;
 
     scheduleEmail(
       unlockDate as Date,
